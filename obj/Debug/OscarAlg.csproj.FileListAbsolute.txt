@@ -1,0 +1,10 @@
+C:\Users\oscar1004\Desktop\Lee\OscarAlg\bin\Debug\OscarAlg.exe.config
+C:\Users\oscar1004\Desktop\Lee\OscarAlg\bin\Debug\OscarAlg.exe
+C:\Users\oscar1004\Desktop\Lee\OscarAlg\bin\Debug\OscarAlg.pdb
+C:\Users\oscar1004\Desktop\Lee\OscarAlg\obj\Debug\OscarAlg.csproj.AssemblyReference.cache
+C:\Users\oscar1004\Desktop\Lee\OscarAlg\obj\Debug\OscarAlg.Properties.Resources.resources
+C:\Users\oscar1004\Desktop\Lee\OscarAlg\obj\Debug\OscarAlg.csproj.GenerateResource.cache
+C:\Users\oscar1004\Desktop\Lee\OscarAlg\obj\Debug\OscarAlg.csproj.CoreCompileInputs.cache
+C:\Users\oscar1004\Desktop\Lee\OscarAlg\obj\Debug\OscarAlg.exe
+C:\Users\oscar1004\Desktop\Lee\OscarAlg\obj\Debug\OscarAlg.pdb
+C:\Users\oscar1004\Desktop\Lee\OscarAlg\obj\Debug\OscarAlg.OscarAlg.resources
