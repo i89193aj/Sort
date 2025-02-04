@@ -18,3 +18,13 @@ C:\Users\oscar1004\Desktop\MyAlg\OscarAlg\obj\Debug\OscarAlg.csproj.GenerateReso
 C:\Users\oscar1004\Desktop\MyAlg\OscarAlg\obj\Debug\OscarAlg.csproj.CoreCompileInputs.cache
 C:\Users\oscar1004\Desktop\MyAlg\OscarAlg\obj\Debug\OscarAlg.exe
 C:\Users\oscar1004\Desktop\MyAlg\OscarAlg\obj\Debug\OscarAlg.pdb
+C:\Users\Oscar\Desktop\Oscar\GitHub\Alg\Sort\bin\Debug\OscarAlg.exe.config
+C:\Users\Oscar\Desktop\Oscar\GitHub\Alg\Sort\bin\Debug\OscarAlg.exe
+C:\Users\Oscar\Desktop\Oscar\GitHub\Alg\Sort\bin\Debug\OscarAlg.pdb
+C:\Users\Oscar\Desktop\Oscar\GitHub\Alg\Sort\obj\Debug\OscarAlg.csproj.AssemblyReference.cache
+C:\Users\Oscar\Desktop\Oscar\GitHub\Alg\Sort\obj\Debug\OscarAlg.OscarAlg.resources
+C:\Users\Oscar\Desktop\Oscar\GitHub\Alg\Sort\obj\Debug\OscarAlg.Properties.Resources.resources
+C:\Users\Oscar\Desktop\Oscar\GitHub\Alg\Sort\obj\Debug\OscarAlg.csproj.GenerateResource.cache
+C:\Users\Oscar\Desktop\Oscar\GitHub\Alg\Sort\obj\Debug\OscarAlg.csproj.CoreCompileInputs.cache
+C:\Users\Oscar\Desktop\Oscar\GitHub\Alg\Sort\obj\Debug\OscarAlg.exe
+C:\Users\Oscar\Desktop\Oscar\GitHub\Alg\Sort\obj\Debug\OscarAlg.pdb

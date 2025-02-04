@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using System.Windows.Forms.VisualStyles;
+
 
 namespace OscarAlg
 {
@@ -18,6 +21,13 @@ namespace OscarAlg
             Merge,
             Quickly,
         }
+
+        internal enum MemoryMethod
+        {
+            malloc,
+            calloc
+        }
+
         //不需要額外的內存來儲存中介變數，並且使用位元運算的方式可能略快
         public void swap_Bit(ref int a, ref int b)
         {
@@ -32,8 +42,62 @@ namespace OscarAlg
             a = b;
             b = temp;
         }
+
+        /// <summary>
+        /// 這個要去屬性那邊改允許不安全的程式碼
+        /// </summary>
+        /// <param name="_Size"></param>
+        public unsafe void MemoryCreate(int _Size, MemoryMethod _MemoryMethod = MemoryMethod.malloc)
+        {
+            // 分配未初始化的記憶體
+            IntPtr ptr = Marshal.AllocHGlobal(_Size * sizeof(int)); 
+
+            switch (_MemoryMethod)
+            {
+                case MemoryMethod.malloc:
+                    // 初始化記憶體為 0
+                    for (int i = 0; i < _Size; i++)
+                    {
+                        Marshal.WriteInt32(ptr, i * sizeof(int), 0);
+                    }
+                    break;
+                case MemoryMethod. calloc:
+                    // 使用 memset 設為 0（等同於 calloc）
+                    byte[] zeroBytes = new byte[_Size * sizeof(int)];
+                    Marshal.Copy(zeroBytes.ToArray(), 0, ptr, _Size * sizeof(int));
+                    break;
+            }
+        }
+
+        public void MarshalWrite(IntPtr _ptr, int _size)
+        {
+            Marshal.WriteInt32(_ptr, sizeof(int));
+        }
+
+        /// <summary>
+        /// 讀取指標矩陣
+        /// </summary>
+        /// <param name="_ptr"></param>
+        /// <param name="_size"></param>
+        /// <returns></returns>
+        public int MarshalRead(IntPtr _ptr, int _size)
+        {
+            return Marshal.ReadInt32(_ptr, sizeof(int));
+        }
+
+        /// <summary>
+        /// 釋放記憶體
+        /// </summary>
+        /// <param name="_ptr"></param>
+        public void MarshalFree(IntPtr _ptr)
+        {
+            Marshal.FreeHGlobal(_ptr); 
+        }
     }
 
+    /// <summary>
+    /// Reference：https://leetcode.com/problems/sort-an-array/solutions/1401412/c-clean-code-solution-fastest-all-15-sorting-methods-detailed/
+    /// </summary>
     internal class Sort : Alg
     {
         /// <summary>
@@ -44,64 +108,55 @@ namespace OscarAlg
         /// <returns></returns>
         public int[] InsertSort(int[] nums, string _goodmodel = "Great")
         {
-            //int[] ans = new int[nums.length];
-            int index1 = 1;
-            while (index1 < nums.Length)
-            {
-                int index2 = index1 - 1;
-                int icompare = nums[index1];
-
                 //看"Great較好!差別：第一種會一直交換;第二種只是單方便往前丟值，直到比icompare還小的才會把icompare值丟到這個位置的後一格!"
                 switch (_goodmodel)
                 {
                     case "Worse":
-                        while (index2 >= 0)
+                        int index1 = 1;
+                        while (index1 < nums.Length)
                         {
+                            int index2 = index1 - 1;
+                            int icompare = nums[index1];
+                            while (index2 >= 0)
+                            {
 
-                            if (nums[index2 + 1] < nums[index2])
-                            {
-                                // 使用 XOR 進行交換
-                                nums[index2] = nums[index2 + 1] ^ nums[index2];      // 第一步：a = a ^ b
-                                nums[index2 + 1] = nums[index2] ^ nums[index2 + 1];  // 第二步：b = (a ^ b) ^ b = a ^ b
-                                nums[index2] = nums[index2] ^ nums[index2 + 1];      // 第三步：a = (a ^ b) ^ a = b ^ a
+                                if (nums[index2 + 1] < nums[index2])
+                                {
+                                    // 使用 XOR 進行交換
+                                    swap_Bit(ref nums[index2 + 1], ref nums[index2]);
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                                index2--;
                             }
-                            else
-                            {
-                                break;
-                            }
-                            index2--;
+                            index1++;
                         }
-                        index1++;
                         break;
 
                     case "Great":
-                        while (index2 >= 0)
+                        int index = 1;
+                        while (index < nums.Length)
                         {
-                            if (icompare < nums[index2])
+                            int index2 = index - 1;
+                            int icompare = nums[index];
+                            while (index2 >= 0)
                             {
-                                nums[index2 + 1] = nums[index2];
-                                index2--;
+                                if (icompare < nums[index2])
+                                {
+                                    nums[index2 + 1] = nums[index2];
+                                    index2--;
+                                }
+                                else
+                                    break;
                             }
-                            else
-                                break;
+                            nums[index2 + 1] = icompare;
+                            index++;
                         }
-                        nums[index2 + 1] = icompare;
-                        index1++;
                         break;
                 }
-                while (index2 >= 0)
-                {
-                    if (icompare < nums[index2])
-                    {
-                        nums[index2 + 1] = nums[index2];
-                        index2--;
-                    }
-                    else
-                        break;
-                }
-                nums[index2 + 1] = icompare;
-                index1++;
-            }
+            
             return nums;
 
             #region - LeeCode 解法 -
@@ -278,7 +333,7 @@ namespace OscarAlg
             // 如果數組長度為1，直接返回，不進行排序
             //if (nums.Length <= 1) return nums; 
 
-            MergeRecursion(nums, 0, nums.Length - 1);
+            MergeRecursion(nums, 0, nums.Length - 1, _goodmodel);
             return nums;
         }
 
@@ -288,7 +343,7 @@ namespace OscarAlg
         /// <param name="_nums"></param>
         /// <param name="_firstIndex"></param>
         /// <param name="_LastIndex"></param>
-        public void MergeRecursion(int[] _nums, int _firstIndex, int _LastIndex)
+        public void MergeRecursion(int[] _nums, int _firstIndex, int _LastIndex, string _goodmodel = "Great")
         {
             //當_LastIndex <= _firstIndex時，不再進遞迴
             if (_LastIndex <= _firstIndex) return;
@@ -297,104 +352,122 @@ namespace OscarAlg
             MergeRecursion(_nums, _firstIndex, _middleIndex);
             MergeRecursion(_nums, _middleIndex + 1, _LastIndex);
 
-            //MergeArray(_nums, _firstIndex, _middleIndex, _LastIndex);
-            MergeArrayInPlace(_nums, _firstIndex, _middleIndex, _LastIndex);
+            MergeArray(_nums, _firstIndex, _middleIndex, _LastIndex, _goodmodel);
         }
 
         /// <summary>
         /// Step.2 征服（Conquer）：遞迴解決這些子問題。
         /// Step.3 合併（Combine）：將子問題的解合成，得到最終的解。
+        /// 這裡沒有Worse Great；三個方法差不多(指標還稍顯慢了)
         /// </summary>
         /// <param name="nums"></param>
         /// <param name="_FirstIndex"></param>
         /// <param name="_MiddleIndex"></param>
         /// <param name="_LastIndex"></param>
-        public void MergeArray(int[] nums, int _FirstIndex, int _MiddleIndex, int _LastIndex)
+        public void MergeArray(int[] nums, int _FirstIndex, int _MiddleIndex, int _LastIndex, string _goodmodel = "Great")
         {
-            //宣告左右長度
-            int iLengthLeft = _MiddleIndex - _FirstIndex + 1;
-            int iLengthRight = _LastIndex - _MiddleIndex;
-
-            //new暫存Array
-            int[] Left = new int[iLengthLeft];
-            int[] Right = new int[iLengthRight];
-
-            //賦值到暫存
-            for(int i = 0;i < iLengthLeft;i++)
-                Left[i] = nums[_FirstIndex + i];
-            for (int i = 0; i < iLengthRight; i++)
-                Right[i] = nums[_MiddleIndex + 1 + i];
-
-            //比較兩邊的數組大小，將值重新排列給nums
-            int _iLeft = 0; int _iRight = 0;//這個index是給暫存Array用的
-            int iMain = _FirstIndex;
-            while (_iLeft < iLengthLeft && _iRight < iLengthRight)
+            //速度差不多
+            switch (_goodmodel)
             {
-                if (Left[_iLeft] <= Right[_iRight])
-                { 
-                    nums[iMain] = Left[_iLeft];
-                    _iLeft++;
-                }
-                else
-                {
-                    nums[iMain] = Right[_iRight];
-                    _iRight++;
-                }
+                case "Worse":   
+                    //宣告左右長度
+                    int iLengthLeft = _MiddleIndex - _FirstIndex + 1;
+                    int iLengthRight = _LastIndex - _MiddleIndex;
 
-                iMain++;
-            }
+                    //new暫存Array
+                    int[] Left = new int[iLengthLeft];
+                    int[] Right = new int[iLengthRight];
 
-            //把剩下沒排進去的數組排進去(因為上面可以左邊 or 右邊會先排完)
-            while(_iLeft < iLengthLeft)
-            {
-                nums[iMain] = Left[_iLeft];
-                _iLeft++;
-                iMain++;
-            }
+                    //賦值到暫存
+                    for (int i = 0; i < iLengthLeft; i++)
+                        Left[i] = nums[_FirstIndex + i];
+                    for (int i = 0; i < iLengthRight; i++)
+                        Right[i] = nums[_MiddleIndex + 1 + i];
 
-            while (_iRight < iLengthRight)
-            {
-                nums[iMain] = Right[_iRight];
-                _iRight++;
-                iMain++;
-            }
-        }
-
-        public void MergeArrayInPlace(int[] nums, int _FirstIndex, int _MiddleIndex, int _LastIndex)
-        {
-            // 兩個指針：一個指向左子數組的開始，另一個指向右子數組的開始
-            int left = _FirstIndex;
-            int right = _MiddleIndex + 1;
-
-            // 合併過程中用一個臨時變數 i 來處理元素插入
-            while (left <= _MiddleIndex && right <= _LastIndex)
-            {
-                // 若左子數組的當前元素小於等於右子數組的當前元素，則不需更動
-                if (nums[left] <= nums[right])
-                {
-                    left++;
-                }
-                else
-                {
-                    // 需要將右子數組的元素插入到左子數組位置
-                    int temp = nums[right];
-                    int i = right;
-
-                    // 把左邊比右邊大的元素往右邊移動
-                    while (i > left)
+                    //比較兩邊的數組大小，將值重新排列給nums
+                    int _iLeft = 0; int _iRight = 0;//這個index是給暫存Array用的
+                    int iMain = _FirstIndex;
+                    while (_iLeft < iLengthLeft && _iRight < iLengthRight)
                     {
-                        nums[i] = nums[i - 1];
-                        i--;
-                    }
-                    // 將右邊元素放到正確位置
-                    nums[left] = temp;
+                        if (Left[_iLeft] <= Right[_iRight])
+                        {
+                            nums[iMain] = Left[_iLeft];
+                            _iLeft++;
+                        }
+                        else
+                        {
+                            nums[iMain] = Right[_iRight];
+                            _iRight++;
+                        }
 
-                    // 移動指針
-                    left++;
-                    right++;
-                }
+                        iMain++;
+                    }
+
+                    //把剩下沒排進去的數組排進去(因為上面可以左邊 or 右邊會先排完)
+                    while (_iLeft < iLengthLeft)
+                    {
+                        nums[iMain] = Left[_iLeft];
+                        _iLeft++;
+                        iMain++;
+                    }
+
+                    while (_iRight < iLengthRight)
+                    {
+                        nums[iMain] = Right[_iRight];
+                        _iRight++;
+                        iMain++;
+                    }
+                    break;
+                case "Great"://編譯的比較完整(清晰易懂)
+                    if (_FirstIndex >= _LastIndex) return;
+                  
+                    int l = _FirstIndex, r = _MiddleIndex + 1, k = 0, size = _LastIndex - _FirstIndex + 1;
+                    int[] sorted = new int[size];
+                    while (l <= _MiddleIndex && r <= _LastIndex)
+                        sorted[k++] = nums[l] < nums[r] ? nums[l++] : nums[r++];
+                    while (l <= _MiddleIndex)
+                        sorted[k++] = nums[l++];
+                    while (r <= _LastIndex)
+                        sorted[k++] = nums[r++];
+
+                    for (k = 0; k < size; k++)
+                        nums[k + _FirstIndex] = sorted[k];
+
+
+                    break;
+                case "Pointer":
+                    int left = _FirstIndex, right = _MiddleIndex + 1, main1 = 0, size1 = _LastIndex - _FirstIndex + 1;
+
+                    // 使用 Marshal.AllocHGlobal 分配未初始化的記憶體
+                    IntPtr ptrSorted = Marshal.AllocHGlobal(size1 * sizeof(int));
+
+                    try
+                    {
+                        // Merging process
+                        while (left <= _MiddleIndex && right <= _LastIndex)
+                            Marshal.WriteInt32(ptrSorted, (main1++) * sizeof(int), nums[left] < nums[right] ? nums[left++] : nums[right++]);
+
+                        while (left <= _MiddleIndex)
+                            Marshal.WriteInt32(ptrSorted, (main1++) * sizeof(int), nums[left++]);
+
+                        while (right <= _LastIndex)
+                            Marshal.WriteInt32(ptrSorted, (main1++) * sizeof(int), nums[right++]);
+
+                        // 將合併後的結果寫回 nums
+                        for (k = 0; k < size1; k++)
+                            nums[k + _FirstIndex] = Marshal.ReadInt32(ptrSorted, k * sizeof(int));
+                    }
+                    finally
+                    {
+                        // 釋放分配的記憶體
+                        Marshal.FreeHGlobal(ptrSorted);
+                    }
+                    break;
             }
         }
-            #endregion
+
+
+        
+        #endregion
     }
 }
