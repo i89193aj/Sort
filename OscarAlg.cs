@@ -50,6 +50,8 @@ namespace OscarAlg
                     txtOutput.Text += txtInput.Text[i];
             }
             txtOutput.Text += "]";
+
+            gbSortMethod.Enabled = true;
         }
         
         private void btnMySort_Click(object sender, EventArgs e)
@@ -67,11 +69,11 @@ namespace OscarAlg
                     method = Alg.SortMethod.Insert;
                     break;
                 case "btnSelectSort":
-                    method = Alg.SortMethod.Selecting;
+                    method = Alg.SortMethod.Select;
 
                     break;
                 case "btnBubbleSort":
-                    method = Alg.SortMethod.bubble;
+                    method = Alg.SortMethod.Bubble;
 
                     break;
                 case "btnMergeSort":
@@ -82,6 +84,12 @@ namespace OscarAlg
                     method = Alg.SortMethod.Quickly;
 
                     break;
+
+                case "btnCSharpSort":
+                    method = Alg.SortMethod.C_Sharp_Lib;
+
+                    break;
+
                 default: break;
             }
 
@@ -91,13 +99,20 @@ namespace OscarAlg
                 case Alg.SortMethod.Insert:
                     ans = SortAlg.InsertSort(temp, sModelFactor);
                     break;
-                case Alg.SortMethod.Selecting:
+                case Alg.SortMethod.Select:
+                    ans = SortAlg.SelectSort(temp, sModelFactor);
                     break;
-                case Alg.SortMethod.bubble:
+                case Alg.SortMethod.Bubble:
+                    ans = SortAlg.BubbleSort(temp, sModelFactor);
                     break;
                 case Alg.SortMethod.Merge:
+                    ans = SortAlg.MergeSort(temp, sModelFactor);
                     break;
                 case Alg.SortMethod.Quickly:
+                    break;
+                case Alg.SortMethod.C_Sharp_Lib:
+                    ans = SortAlg.CSharpSort(temp, sModelFactor);
+
                     break;
                 default: break;
             }
@@ -107,6 +122,7 @@ namespace OscarAlg
             if (ans == null)
             {
                 MessageBox.Show("Array is null");
+                button.Enabled = true;
                 return;
             }
 
@@ -132,6 +148,9 @@ namespace OscarAlg
 
         private void btnCleanArray_Click(object sender, EventArgs e)
         {
+            if (iInputnum == null)
+                return;
+
             Array.Clear(iInputnum, 0, iInputnum.Length);
             txtInput.Text = "";
             txtOutput.Text = "";
@@ -170,6 +189,8 @@ namespace OscarAlg
 
 
             btnRadom.Enabled = true;
+            btnDeepCopy.Enabled = true;
+            gbSortMethod.Enabled = true;
         }
 
         private void btnDeepCopy_Click(object sender, EventArgs e)
