@@ -12,6 +12,7 @@ using static System.Windows.Forms.AxHost;
 using System.Windows.Forms;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using System.Xml.Linq;
+using System.Threading;
 
 
 namespace OscarAlg
@@ -193,6 +194,13 @@ namespace OscarAlg
             (Alice, 25) (Carol, 25) (Bob, 30)  
         */
 
+        #endregion
+
+        #region - -
+        /*Timsort 是一種高效的混合排序演算法，由 Tim Peters 在 2002 年為 Python 設計，後來被應用到 Java、C# (.NET OrderBy()) 等語言中。
+        它結合了：
+        Insertion Sort（插入排序，O(n²)）
+        Merge Sort（合併排序，O(n log n)）*/
         #endregion
 
         //public new void FindAddress(int[] nums)
@@ -456,7 +464,7 @@ namespace OscarAlg
         }
 
         /// <summary>
-        /// C#內建Sort
+        /// C#內建Sort(實際上是 QuickSort + HeapSort優化來的)
         /// </summary>
         /// <param name="nums"></param>
         /// <param name="_goodmodel"></param>
@@ -1280,7 +1288,6 @@ namespace OscarAlg
             }
 
         }
-        #endregion
         #region - 舉例說明 -
         /*
               10
@@ -1299,6 +1306,8 @@ namespace OscarAlg
           4  1 2  10
         */
         #endregion
+        #endregion
+
 
 
         /// <summary>
@@ -1497,30 +1506,79 @@ namespace OscarAlg
             /// <returns></returns>
             public int[] SortJumbled(int[] mapping, int[] nums)
             {
+                /************************************LINQ*************************************/
+                #region - LINQ (OrderBy) -
+                //OrderBy：他是排序回傳的值，然後對應的要映射再把nums重新做一次到新的Array
+                /*return nums.OrderBy(GetMapping).ToArray();
+                int GetMapping(int num)
+                {
+                    int multy = 1;
+                    if (num == 0) return mapping[0];
+                    int result = 0;
+                    while (num != 0)
+                    {
+                        int remainder = num % 10;
+                        result += (mapping[remainder] * multy);
+                        multy *= 10;
+                        num /= 10;
+                    }
+                    return result;
+                }*/
+                #endregion
+                /********************************Without LINQ********************************/
                 int[] iSort = new int[nums.Length];
-                Dictionary<int, int> MapReturnToSrcIdx = new Dictionary<int, int>();
+                Dictionary<int, Queue<int>> MapiSortFeq = new Dictionary<int, Queue<int>>();
+
+                Stack<int> RemainderForFactor = new Stack<int>();
+                int iDivior = 10;
 
                 //先重整新的數組
                 for (int i = 0; i < nums.Length; i++)
-                {
-                    int iDivior = 1;
-                    while (nums[i] / iDivior != 0)
-                    {
-                        int iRemainder = nums[i] % iDivior;
-                        iSort[i] += mapping[iRemainder] * iDivior;
-                        iDivior *= 10;
-                    }
+                {                   
+                    iSort[i] = nums[i] == 0 ? mapping[nums[i]] : CalculateSortValue(nums[i], mapping, iDivior);
 
-                    if (!MapReturnToSrcIdx.ContainsKey(iSort[i]))
-                        MapReturnToSrcIdx[iSort[i]] = nums[i];
+                    //很重要!!(這裡容易忘記new)
+                    if (!MapiSortFeq.ContainsKey(iSort[i]))
+                        MapiSortFeq[iSort[i]] = new Queue<int>();
+
+                    //對應後的值，直接建立key，然後把值Queue進來!
+                    MapiSortFeq[iSort[i]].Enqueue(nums[i]);
                 }
 
-                Array.Sort(iSort);
+                Sort sort = new Sort();
+                sort.RadixSort(iSort, "MinVal");
+                //Array.Sort(iSort);
 
-                for (int i = 0; i < nums.Length; i++)
-                    iSort[i] = MapReturnToSrcIdx[iSort[i]];
+                for (int i = 0; i < iSort.Length; i++)
+                {
+                    iSort[i] = MapiSortFeq[iSort[i]].Dequeue();
+                }
 
                 return iSort;
+            }
+
+            private int GetRemainder(int _nums,int _iFactor ,int _iDivisor)
+            { return _nums / _iFactor % _iDivisor; }
+
+            private int CalculateSortValue(int _iSrc, int[] _mapping, int _Divisor)
+            {
+                int factor = 1; int MappingValue = 0;
+                Stack<int> RemainderForFactor = new Stack<int>();
+
+                while (_iSrc / factor != 0)
+                {
+                    int iRemainder = GetRemainder(_iSrc, factor, _Divisor);
+                    RemainderForFactor.Push(iRemainder);
+                    factor *= _Divisor;
+                }
+
+                //把對應後的數字家回去 = 總數(factor記得跟著除)
+                while (RemainderForFactor.Count != 0)
+                {
+                    MappingValue += _mapping[RemainderForFactor.Pop()] * (factor /= _Divisor);
+                }
+
+                return MappingValue;
             }
             #endregion
 

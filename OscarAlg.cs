@@ -386,7 +386,6 @@ namespace OscarAlg
         public void RtxtExaminationMessage(string _str, int iFront = 12)
         {
             string[] sSplit = Regex.Split(_str, "([.])");
-            string result = "\r\n";
             _str = "";
 
             #region - 字串格式 (有興趣自己看) -
@@ -613,8 +612,17 @@ namespace OscarAlg
                         sResult = "{" + string.Join(", ", iAns) + "}";
                         MessageBoxRich("Input：" + sSrc + "，Output：" + sResult);
                         break;
-                    
+                    case 2191:
 
+                        //  解題：
+                        iAnsArray = SolutionSort.SortJumbled(iExamArry1, iExamArry2);
+                        //  測試答案：
+                        sSrc = "{" + string.Join(", ", iExamArry1) + "}" + "，{" + string.Join(", ", iExamArry2) + "}";
+                        sResult = "{" + string.Join(", ", iAnsArray) + "}";
+                        MessageBoxRich("Input：" + sSrc + "，Output：" + sResult);
+                        break;
+
+                        
                 }
             }
             else
@@ -652,6 +660,22 @@ namespace OscarAlg
                                        "then the whole array will be sorted in non-decreasing order." +
                                        "Return the shortest such subarray and output its length." +
                                        "Example 1:\r\n\r\nInput: nums = [2,6,4,8,10,9,15]\r\nOutput: 5\r\nExplanation: You need to sort [6, 4, 8, 10, 9] in ascending order to make the whole array sorted in ascending order.\r\nExample 2:\r\n\r\nInput: nums = [1,2,3,4]\r\nOutput: 0\r\nExample 3:\r\n\r\nInput: nums = [1]\r\nOutput: 0\r\n \r\n\r\nConstraints:\r\n\r\n1 <= nums.length <= 104\r\n-105 <= nums[i] <= 105\r\n \r\n\r\nFollow up: Can you solve it in O(n) time complexity?";
+                        RtxtExaminationMessage(sExamination);
+
+                        break;
+                    case 2191:
+                        //  題型敘述：
+                        sTitle = iLeetCodeNum.ToString() + ". " +
+                                 "Sort the Jumbled Numbers：";
+                        RtxtExaminationMessage(sTitle, 16);
+                        sExamination = "You are given a 0-indexed integer array mapping which represents the mapping rule of a shuffled decimal system. " +
+                            "mapping[i] = j means digit i should be mapped to digit j in this system.\r\n\r\n" +
+                            "The mapped value of an integer is the new integer obtained by replacing each occurrence of digit i in the integer with mapping[i] for all 0 <= i <= 9.\r\n\r\n" +
+                            "You are also given another integer array nums. Return the array nums sorted in non-decreasing order based on the mapped values of its elements." +
+                            "\r\n\r\nNotes:\r\n\r\n" +
+                            "Elements with the same mapped values should appear in the same relative order as in the input.\r\n" +
+                            "The elements of nums should only be sorted based on their mapped values and not be replaced by them." +
+                            "Example 1:\r\n\r\nInput: mapping = [8,9,4,0,2,1,3,5,7,6], nums = [991,338,38]\r\nOutput: [338,38,991]\r\nExplanation: \r\nMap the number 991 as follows:\r\n1. mapping[9] = 6, so all occurrences of the digit 9 will become 6.\r\n2. mapping[1] = 9, so all occurrences of the digit 1 will become 9.\r\nTherefore, the mapped value of 991 is 669.\r\n338 maps to 007, or 7 after removing the leading zeros.\r\n38 maps to 07, which is also 7 after removing leading zeros.\r\nSince 338 and 38 share the same mapped value, they should remain in the same relative order, so 338 comes before 38.\r\nThus, the sorted array is [338,38,991].\r\nExample 2:\r\n\r\nInput: mapping = [0,1,2,3,4,5,6,7,8,9], nums = [789,456,123]\r\nOutput: [123,456,789]\r\nExplanation: 789 maps to 789, 456 maps to 456, and 123 maps to 123. Thus, the sorted array is [123,456,789].";
                         RtxtExaminationMessage(sExamination);
 
                         break;
