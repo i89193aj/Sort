@@ -414,23 +414,46 @@ namespace OscarAlg
             {
                 sSplit[i] = sSplit[i].Trim(); //去除前後空格
                 if (/*sSplit[i] != "," &&*/ sSplit[i] != "." && i + 1 < sSplit.Length)
+                {
+                    //第一個是數字，先跳過
+                    if (int.TryParse(sSplit[0], out int itFirstnum))
+                    {
+                        sSplit[0] += ". ";
+                        continue;
+                    }
+
+                    if (i + 3 < sSplit.Length && sSplit[i] + sSplit[i + 1] + sSplit[i + 2] + sSplit[i + 3] == "(i.e.")
+                    {
+                        sSplit[i] = sSplit[i] + sSplit[i + 1];
+                        sSplit[i + 2] = sSplit[i + 2] + sSplit[i + 3];
+                        i += 3;
+                        continue;
+                    }
+                    //0<= t.Length <= 10^4，也跳過換行
+                    if(i + 2 < sSplit.Length && sSplit[i+1].Contains(".") && sSplit[i+2].Contains("<")|| sSplit[i+2].Contains("<="))
+                    {
+                        sSplit[i] = sSplit[i] + sSplit[i + 1];
+                        RN_Motify(ref sSplit[i]);
+                        i += 1;
+                        continue;
+                    }
+
                     sSplit[i] += sSplit[i + 1] + "\r\n";
+                }
 
-                // 1. 確保 "Example X:" 前後只有一次換行
-                sSplit[i] = Regex.Replace(sSplit[i], @"(\r\n)+Example (\d+):", match =>
+                int sSplit_Pointer = 1;bool bConsecutiveOfPoint =false; int sSplit_Pointer2 = 0;
+                while (i + sSplit_Pointer < sSplit.Length && sSplit[i + sSplit_Pointer] == "" && sSplit[i + sSplit_Pointer2] == ".")
                 {
-                    // match.Groups[2] 是捕獲到的數字部分
-                    return $"\r\nExample {match.Groups[2]}:";
-                });
-                // 2. 在每個 "Example:" 後面加上 "\r\n"，如果後面沒有的話
-                sSplit[i] = Regex.Replace(sSplit[i], @"Example \d+:(\r\n)+", match =>
-                {
-                    // match.Groups[2] 是捕獲到的數字部分
-                    return $"\r\nExample {match.Groups[2]}:";
-                });
+                    bConsecutiveOfPoint = true;
+                    sSplit[i] += " .";
+                    sSplit_Pointer += 2;
+                    sSplit_Pointer2 += 2;
+                }
 
-                // 3. 移除多餘的換行符號（將多個換行符號替換為一個）
-                sSplit[i] = Regex.Replace(sSplit[i], @"(\r\n)+", "\r\n");
+                RN_Motify(ref sSplit[i]);
+
+                if (bConsecutiveOfPoint)
+                    i += sSplit_Pointer2;
             }
 
             _str = "";
@@ -458,6 +481,25 @@ namespace OscarAlg
                 RtxtExamination.SelectionFont = new Font(currentFont.FontFamily, iFront);
                 RtxtExamination.AppendText(_str);
             }
+        }
+
+        private void RN_Motify(ref string _str)
+        {
+            // 1. 確保 "Example X:" 前後只有一次換行
+            _str = Regex.Replace(_str, @"(\r\n)+Example (\d+):", match =>
+            {
+                // match.Groups[2] 是捕獲到的數字部分
+                return $"\r\nExample {match.Groups[2]}:";
+            });
+            // 2. 在每個 "Example:" 後面加上 "\r\n"，如果後面沒有的話
+            _str = Regex.Replace(_str, @"Example \d+:(\r\n)+", match =>
+            {
+                // match.Groups[2] 是捕獲到的數字部分
+                return $"\r\nExample {match.Groups[2]}:";
+            });
+
+            // 3. 移除多餘的換行符號（將多個換行符號替換為一個）
+            _str = Regex.Replace(_str, @"(\r\n)+", "\r\n");
         }
 
         private void btnSubmit_Click(object sender, EventArgs e)
@@ -562,7 +604,8 @@ namespace OscarAlg
 
             int[] iExamArry1 = new int[sElements1.Length];
             int[] iExamArry2 = new int[sElements2.Length];
-            int[] iAnsArray = iExamArry1; int iAns = 0;
+            int[] iAnsArray = iExamArry1; int iAns = 0; string sAns = null;
+            bool bAns = false;
 
 
             // 解析每個數字並存入一維陣列
@@ -621,8 +664,25 @@ namespace OscarAlg
                         sResult = "{" + string.Join(", ", iAnsArray) + "}";
                         MessageBoxRich("Input：" + sSrc + "，Output：" + sResult);
                         break;
+                    case 392:
 
-                        
+                        //  解題：
+                        bAns = SolutionSort.IsSubsequence(input1, input2);
+                        //  測試答案：
+                        sSrc = "{" + string.Join(", ", input1) + "}" + "，{" + string.Join(", ", input2) + "}";
+                        sResult = bAns.ToString();
+                        MessageBoxRich("Input：" + sSrc + "，Output：" + sResult);
+                        break;
+                    case 179:
+
+                        //  解題：
+                        sAns = SolutionSort.LargestNumber(iExamArry1);
+                        //  測試答案：
+                        sSrc = "{" + string.Join(", ", input1) + "}" ;
+                        sResult = sAns;
+                        MessageBoxRich("Input：" + sSrc + "，Output：" + sResult);
+                        break;
+
                 }
             }
             else
@@ -659,7 +719,7 @@ namespace OscarAlg
                         sExamination = "Given an integer array nums, you need to find one continuous subarray such that if you only sort this subarray in non-decreasing order, " +
                                        "then the whole array will be sorted in non-decreasing order." +
                                        "Return the shortest such subarray and output its length." +
-                                       "Example 1:\r\n\r\nInput: nums = [2,6,4,8,10,9,15]\r\nOutput: 5\r\nExplanation: You need to sort [6, 4, 8, 10, 9] in ascending order to make the whole array sorted in ascending order.\r\nExample 2:\r\n\r\nInput: nums = [1,2,3,4]\r\nOutput: 0\r\nExample 3:\r\n\r\nInput: nums = [1]\r\nOutput: 0\r\n \r\n\r\nConstraints:\r\n\r\n1 <= nums.length <= 104\r\n-105 <= nums[i] <= 105\r\n \r\n\r\nFollow up: Can you solve it in O(n) time complexity?";
+                                       "Example 1:\r\n\r\nInput: nums = [2,6,4,8,10,9,15]\r\nOutput: 5\r\nExplanation: You need to sort [6, 4, 8, 10, 9] in ascending order to make the whole array sorted in ascending order.\r\nExample 2:\r\n\r\nInput: nums = [1,2,3,4]\r\nOutput: 0\r\nExample 3:\r\n\r\nInput: nums = [1]\r\nOutput: 0\r\n \r\n\r\nConstraints:\r\n\r\n1 <= nums.length <= 10^4\r\n-10^5 <= nums[i] <= 10^5\r\n \r\n\r\nFollow up: Can you solve it in O(n) time complexity?";
                         RtxtExaminationMessage(sExamination);
 
                         break;
@@ -676,6 +736,30 @@ namespace OscarAlg
                             "Elements with the same mapped values should appear in the same relative order as in the input.\r\n" +
                             "The elements of nums should only be sorted based on their mapped values and not be replaced by them." +
                             "Example 1:\r\n\r\nInput: mapping = [8,9,4,0,2,1,3,5,7,6], nums = [991,338,38]\r\nOutput: [338,38,991]\r\nExplanation: \r\nMap the number 991 as follows:\r\n1. mapping[9] = 6, so all occurrences of the digit 9 will become 6.\r\n2. mapping[1] = 9, so all occurrences of the digit 1 will become 9.\r\nTherefore, the mapped value of 991 is 669.\r\n338 maps to 007, or 7 after removing the leading zeros.\r\n38 maps to 07, which is also 7 after removing leading zeros.\r\nSince 338 and 38 share the same mapped value, they should remain in the same relative order, so 338 comes before 38.\r\nThus, the sorted array is [338,38,991].\r\nExample 2:\r\n\r\nInput: mapping = [0,1,2,3,4,5,6,7,8,9], nums = [789,456,123]\r\nOutput: [123,456,789]\r\nExplanation: 789 maps to 789, 456 maps to 456, and 123 maps to 123. Thus, the sorted array is [123,456,789].";
+                        RtxtExaminationMessage(sExamination);
+
+                        break;
+                    case 392:
+                        //  題型敘述：
+                        sTitle = iLeetCodeNum.ToString() + ". " +
+                                 "Is Subsequence：";
+                        RtxtExaminationMessage(sTitle, 16);
+                        sExamination = "Given two strings s and t, return true if s is a subsequence of t, or false otherwise." +
+                            "\r\n\r\nA subsequence of a string is a new string that is formed from the original string by deleting some (can be none) of the characters without disturbing the relative positions of the remaining characters. " +
+                            "(i.e., \"ace\" is a subsequence of \"abcde\" while \"aec\" is not)." +
+                            "Example 1:\r\n\r\nInput: s = \"abc\", t = \"ahbgdc\"\r\nOutput: true\r\nExample 2:\r\n\r\nInput: s = \"axc\", t = \"ahbgdc\"\r\nOutput: false\r\n \r\n\r\nConstraints:\r\n\r\n0 <= s.length <= 100\r\n0 <= t.length <= 10^4\r\ns and t consist only of lowercase English letters.\r\n \r\n\r\nFollow up: Suppose there are lots of incoming s, say s1, s2, ..., sk where k >= 10^9, and you want to check one by one to see if t has its subsequence. In this scenario, how would you change your code?";
+                        RtxtExaminationMessage(sExamination);
+
+                        break;
+                    case 179:
+                        //  題型敘述：
+                        sTitle = iLeetCodeNum.ToString() + ". " +
+                                 "Largest Number：";
+                        RtxtExaminationMessage(sTitle, 16);
+                        sExamination = "Given a list of non-negative integers nums, arrange them such that they form the largest number and return it." +
+                            "\r\n\r\nSince the result may be very large, so you need to return a string instead of an integer."+
+                            "Example 1:\r\n\r\nInput: nums = [10,2]\r\nOutput: \"210\"\r\nExample 2:\r\n\r\nInput: nums = [3,30,34,5,9]\r\n" +
+                            "Output: \"9534330\"\r\n \r\n\r\nConstraints:\r\n\r\n1 <= nums.length <= 100\r\n0 <= nums[i] <= 10^9";
                         RtxtExaminationMessage(sExamination);
 
                         break;

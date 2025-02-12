@@ -1225,6 +1225,8 @@ namespace OscarAlg
 
         #endregion
 
+        #endregion
+
         #region - HeapSort -
         /// <summary>
         /// Heap Sort (Accepted) [T(n) = O(n * lgn)] ，(beast 50.13%)(跟MergeSort差不多)
@@ -1308,8 +1310,7 @@ namespace OscarAlg
         #endregion
         #endregion
 
-
-
+        #region - BucketSort -
         /// <summary>
         /// 這個需要配合其他演算法(因為他只是按比例分桶，桶內還是要排序) => O(n log n)，Lostest will become O(n ^ 2)
         /// </summary>
@@ -1352,6 +1353,7 @@ namespace OscarAlg
 
             return nums;
         }
+        #endregion
 
         /// <summary>
         /// 1122
@@ -1360,7 +1362,7 @@ namespace OscarAlg
         /// </summary>
         public class SolutionSort
         {
-            #region - LeetCode 1122 -
+            #region - LeetCode 1122. Relative Sort Array -
 
             public int[] RelativeSortArray(int[] arr1, int[] arr2)
             {
@@ -1440,7 +1442,7 @@ namespace OscarAlg
             }
             #endregion
 
-            #region - LeetCode 581 -
+            #region - LeetCode 581. Shortest Unsorted Continuous Subarray -
             public int FindUnsortedSubarray(int[] nums)
             {
                 #region - 解圖思路 -
@@ -1497,7 +1499,7 @@ namespace OscarAlg
             }
             #endregion
 
-            #region - LeetCode 2191 -
+            #region - LeetCode 2191. Sort the Jumbled Numbers -
             /// <summary>
             /// 這題要用Stable Sort
             /// </summary>
@@ -1542,7 +1544,7 @@ namespace OscarAlg
                         MapiSortFeq[iSort[i]] = new Queue<int>();
 
                     //對應後的值，直接建立key，然後把值Queue進來!
-                    MapiSortFeq[iSort[i]].Enqueue(nums[i]);
+                    MapiSortFeq[iSort[i]].Enqueue(nums[i]); 
                 }
 
                 Sort sort = new Sort();
@@ -1582,9 +1584,100 @@ namespace OscarAlg
             }
             #endregion
 
+            #region - LeetCode 392. Is Subsequence -
+            public bool IsSubsequence(string s, string t)
+            {
+                int i_sPointer = 0;
+                int iCount = 0;
+                while (iCount < s.Length && i_sPointer < t.Length)
+                {
+                    if (s[iCount] == t[i_sPointer]) iCount++;
+                    i_sPointer++;
+                }
+                return iCount == s.Length;
+            }
+            #endregion
+
+            #region - LeetCode 179. Largest Number -
+            public string LargestNumber(int[] nums)
+            {
+                #region - 別人beast100& ('0' - '9'-> 48 - 57 (ASCII對應值))-
+                /*
+                   請背起來!
+                   '0' 的 ASCII 值是 48。
+                   '1' 的 ASCII 值是 49。
+                   '2' 的 ASCII 值是 50。
+                   '3' 的 ASCII 值是 51。
+                   '4' 的 ASCII 值是 52。
+                   '5' 的 ASCII 值是 53。
+                   '6' 的 ASCII 值是 54。
+                   '7' 的 ASCII 值是 55。
+                   '8' 的 ASCII 值是 56。
+                   '9' 的 ASCII 值是 57。
+
+                    //simplest approach
+                    //var numsString=nums.Select(num=>num.ToString()).ToList();
+                    //numsString.Sort((x,y)=>(y+x).CompareTo(x+y));
+                    //if(numsString[0]=="0") return "0";
+                    //return string.Join("", numsString);
+
+                    bool isAllZero=true;
+                    List<string>[] lists=new List<string>[10];
+
+                    for(int i=0;i<10;i++){
+                        lists[i]=new List<string>();
+                    }
+
+                    for(int i=0;i<nums.Length;i++){
+                        string str=nums[i].ToString();
+                        if(nums[i]!=0) isAllZero=false;
+                        lists[str[0]-'0'].Add(str);
+                    }
+
+                    if(isAllZero) return "0";
+
+                    StringBuilder sb=new StringBuilder();
+                    for(int i=9;i>=0;i--){
+                        if(lists[i].Count>0) {
+                            lists[i].Sort(LargestNumberCustomCompare);
+                            sb.Append(string.Join("",lists[i]));
+                        }
+                    }
+        
+                    return sb.ToString();
+                }
+                private int LargestNumberCustomCompare(string s1, string s2)
+                {
+                    return string.Compare(s2 + s1, s1 + s2, StringComparison.Ordinal);
+                }*/
+                #endregion
+                string[] sSort = new string[nums.Length];
+                for (int i = 0; i < nums.Length; i++)
+                    sSort[i] = nums[i].ToString();
+                Comparator179(sSort);
+
+                string sAns= null;
+                for (int i = 0; i < sSort.Length; i++)
+                    sAns += sSort[i];
+
+                if (int.TryParse(sAns, out int iAns) && iAns == 0)
+                    return "0";
+                    
+                return sAns;
+            }
+
+            private void Comparator179(string[] _strArray)
+            {
+                //比較器前者>後者 = 1 前者<後者 = -1
+                 Comparison<string> myComparator = (a, b) => (b + a).CompareTo(a + b);
+                //int aa= myComparator("20","20"); 等於：0；小於：-1；大於：1
+                Array.Sort(_strArray, myComparator);
+            }
+
+            
+            #endregion
         }
 
 
-        #endregion
     }
 }
