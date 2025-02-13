@@ -19,6 +19,12 @@ namespace OscarAlg
 {
     internal class Alg
     {
+        internal enum LevelOfExam
+        {
+            Easy,
+            Medium,
+            Hard,
+        }
 
         internal enum SortMethod
         {
@@ -1674,8 +1680,99 @@ namespace OscarAlg
                 Array.Sort(_strArray, myComparator);
             }
 
-            
+
             #endregion
+
+            #region - LeetCode 435. Non-overlapping Intervals -
+            public int EraseOverlapIntervals(int[][] intervals)
+            {
+                /*根據區間的結束時間對區間進行排序。
+                  遍歷排序後的區間，選擇那些不會與已選區間重疊的區間。
+                  每次遇到重疊的區間，就增加刪除計數。*/
+                /*greedy：找到每個情境的："最小代價或最大收益：*/
+
+                /*他這個是把起始區間當成index進行映射
+                  技巧的部分：他映射過程中，把最小起起使區間當成映射矩陣的起始位置*/
+                var min = intervals[0][0];  var max = min;  var n = intervals.Length;
+                for (int i = 0; i < n; i++)
+                {
+                    min = Math.Min(min, intervals[i][0]);
+                    max = Math.Max(max, intervals[i][0]);
+                }
+
+                //跟RadixMinSort作法一樣(只是他不做全部排序，而是把重疊的部分刪除)
+                var m = max - min + 1; var map = new int[m]; var removedCount = 0;
+                for (int i = 0; i < n; i++)
+                {
+                    var start = intervals[i][0] - min;
+                    var end = intervals[i][1] - min;
+
+                    if (map[start] > 0)
+                    {
+                        ++removedCount;
+                        map[start] = Math.Min(map[start], end);
+                    }
+                    else
+                    {
+                        map[start] = end;
+                    }
+                }
+
+                //i = 啟始區間(已經不重複)
+                var position = map[0];
+                for (int i = 1; i < m; i++)
+                {
+                    if (map[i] == 0)
+                        continue;
+
+                    if (i < position)
+                    {
+                        ++removedCount;
+                        position = Math.Min(map[i], position);
+                    }
+                    else
+                        position = map[i];
+                }
+
+                return removedCount;
+
+                #region - C# Library Sort -
+                /*
+                Array.Sort(intervals, (a,b)=> a[1] - b[1]);
+                int iMax = intervals[0][1]; int iCount = 0;
+                for(int i=1;i < intervals.Length; i++)
+                {
+                    if (intervals[i][0] < iMax)
+                        iCount++;
+                    else 
+                        iMax = intervals[i][1];
+                }
+
+                return iCount;
+                */
+                #endregion
+            }
+            #endregion
+
+            #region - LeetCode 228. Largest Number -
+            public List<string> SummaryRanges(int[] nums)
+            {
+                List<string> lstAns = new List<string>();
+                if (nums.Length == 0) return lstAns;
+
+                int ileft = 0;  // Pointer
+                for (int i = 0; i < nums.Length; i++)
+                    // 如果是最後一個元素，或 `nums[i] + 1 != nums[i + 1]` (不連續)
+                    if (i + 1 == nums.Length || nums[i] + 1 != nums[i + 1])
+                    {
+                        lstAns.Add(ileft == i ? nums[ileft].ToString() : nums[ileft] + "->" + nums[i]);
+                        ileft = i + 1;  // 更新新的區間起點
+                    }
+
+                return lstAns;
+            }     
+             #endregion
+
         }
 
 

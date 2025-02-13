@@ -27,7 +27,8 @@ namespace OscarAlg
         int m_RadioButtom_Tag = 0;
         bool m_bShowOnly = false;
         int iLeetCodeNum = 0;
-        Alg.SortMethod method = Alg.SortMethod.Insert;
+        Alg.SortMethod m_method = Alg.SortMethod.Insert;
+        Alg.LevelOfExam m_LevelOfExam = Alg.LevelOfExam.Easy;
         Random random = new Random();
         public Stopwatch AlgSendTime = new Stopwatch();    //算法花費時間
         public OscarAlg()
@@ -98,7 +99,7 @@ namespace OscarAlg
             {
                 Ans_Address = Sort.FindAddress(ans);
                 //Console.WriteLine(method.ToString() + "Ans_Address(Before)：Address_FirstIndex = " + Sort.FindAddress(ans)[0] + "，Address_ArrayPointer = " + Sort.FindAddress(ans)[1]);
-                MessageBoxRich(method.ToString() + "Ans_Address(Before)：Address_FirstIndex = " + Ans_Address[0] + "，Address_ArrayPointer = " + Ans_Address[1]);
+                MessageBoxRich(m_method.ToString() + "Ans_Address(Before)：Address_FirstIndex = " + Ans_Address[0] + "，Address_ArrayPointer = " + Ans_Address[1]);
             }
 
             #region - 這兩個先不用 -
@@ -119,7 +120,7 @@ namespace OscarAlg
 
 
             AlgSendTime.Restart();
-            switch (method)
+            switch (m_method)
             {
                 case Alg.SortMethod.Insert:
                     ans = SortAlg.InsertSort(temp, sModelFactor);
@@ -159,7 +160,7 @@ namespace OscarAlg
             {
                 Ans_Address = Sort.FindAddress(ans);
                 //Console.WriteLine(method.ToString() + "Ans_Address(After)：Address_FirstIndex = " + Sort.FindAddress(ans)[0] + "，Address_ArrayPointer = " + Sort.FindAddress(ans)[1]);
-                MessageBoxRich(method.ToString() + "Ans_Address(After)：Address_FirstIndex = " + Ans_Address[0] + "，Address_ArrayPointer = " + Ans_Address[1]);
+                MessageBoxRich(m_method.ToString() + "Ans_Address(After)：Address_FirstIndex = " + Ans_Address[0] + "，Address_ArrayPointer = " + Ans_Address[1]);
             }
 
             #region - 這兩個先不用 -
@@ -303,61 +304,61 @@ namespace OscarAlg
             switch (rbSort.Name)
             {
                 case "rdbInsetSort":
-                    method = Alg.SortMethod.Insert;
+                    m_method = Alg.SortMethod.Insert;
 
                     foreach (Sort.InsertSortMethod method in Enum.GetValues(typeof(Sort.InsertSortMethod)))
                         cbGoodORWorse.Items.Add(method);
 
                     break;
                 case "rabBubbleSort":
-                    method = Alg.SortMethod.Bubble;
+                    m_method = Alg.SortMethod.Bubble;
                     foreach (Sort.BubbleSortMethod method in Enum.GetValues(typeof(Sort.BubbleSortMethod)))
                         cbGoodORWorse.Items.Add(method);
 
                     break;
                 case "rdbSelectSort":
-                    method = Alg.SortMethod.Select;
+                    m_method = Alg.SortMethod.Select;
                     foreach (Sort.SelectSortMethod method in Enum.GetValues(typeof(Sort.SelectSortMethod)))
                         cbGoodORWorse.Items.Add(method);
 
                     break;
                 case "rdbCSharpSort":
-                    method = Alg.SortMethod.C_Sharp_Lib;
+                    m_method = Alg.SortMethod.C_Sharp_Lib;
                     foreach (Sort.CSharpSortMethod method in Enum.GetValues(typeof(Sort.CSharpSortMethod)))
                         cbGoodORWorse.Items.Add(method);
 
                     break;
                 case "rdbMergeSort":
-                    method = Alg.SortMethod.Merge;
+                    m_method = Alg.SortMethod.Merge;
                     foreach (Sort.MergeSortMethod method in Enum.GetValues(typeof(Sort.MergeSortMethod)))
                         cbGoodORWorse.Items.Add(method);
 
                     break;
                 case "rdbQuickSort":
-                    method = Alg.SortMethod.Quickly;
+                    m_method = Alg.SortMethod.Quickly;
                     foreach (Sort.QuickSortMethod method in Enum.GetValues(typeof(Sort.QuickSortMethod)))
                         cbGoodORWorse.Items.Add(method);
 
                     break;
                 case "rdbRadixSort":
-                    method = Alg.SortMethod.Radix;
+                    m_method = Alg.SortMethod.Radix;
                     foreach (Sort.RadixSortMethod method in Enum.GetValues(typeof(Sort.RadixSortMethod)))
                         cbGoodORWorse.Items.Add(method);
 
                     break;
                 case "rdbCountingSort":
-                    method = Alg.SortMethod.Counting;
+                    m_method = Alg.SortMethod.Counting;
                     foreach (Sort.CoutingSortMethod method in Enum.GetValues(typeof(Sort.CoutingSortMethod)))
                         cbGoodORWorse.Items.Add(method);
 
                     break;
                 case "rdbBuketSort":
-                    method = Alg.SortMethod.Buket;
+                    m_method = Alg.SortMethod.Buket;
                     foreach (Sort.BuketSortMethod method in Enum.GetValues(typeof(Sort.BuketSortMethod)))
                         cbGoodORWorse.Items.Add(method);
                     break;
                 case "rdbHeapSort":
-                    method = Alg.SortMethod.Heap;
+                    m_method = Alg.SortMethod.Heap;
                     foreach (Sort.HeapSortMethod method in Enum.GetValues(typeof(Sort.HeapSortMethod)))
                         cbGoodORWorse.Items.Add(method);
 
@@ -507,7 +508,7 @@ namespace OscarAlg
             Button button = (Button)sender;
             button.Enabled = false;
             string sModelFactor = cbGoodORWorse.Text;
-            MessageBoxRich(method.ToString() + " StartCase");
+            MessageBoxRich(m_method.ToString() + " StartCase");
 
             #region - 跑Case -  
             int[] Case;
@@ -539,7 +540,7 @@ namespace OscarAlg
                 int[] ans = new int[iSrc.Length];
                 Array.Copy(iSrc, 0, ans, 0, ans.Length);
 
-                switch (method)
+                switch (m_method)
                 {
                     case Alg.SortMethod.Insert:
                         ans = SortAlg.InsertSort(ans, sModelFactor);
@@ -594,21 +595,27 @@ namespace OscarAlg
                 MessageBox.Show("Please Change the Show the current Examination, first!");
                 return;
             }
-            //int[] arr1 = { 2, 3, 1, 3, 2, 4, 6, 7, 9, 2, 19 };
-            //int[] arr2 = new int[] { 2, 1, 4, 3, 9, 6 };
+            //介面上輸入
             string input1 = txtInput1.Text.Trim();
             string input2 = txtInput2.Text.Trim();
+            string[] sDoubleArry = txtInput1.Text.Trim('[', ']').Split(new string[] { "],[" }, StringSplitOptions.None);
 
             string[] sElements1 = input1.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             string[] sElements2 = input2.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
+            //輸入資料
             int[] iExamArry1 = new int[sElements1.Length];
             int[] iExamArry2 = new int[sElements2.Length];
-            int[] iAnsArray = iExamArry1; int iAns = 0; string sAns = null;
+            int[][] iExamDoubleArry1 = sDoubleArry.Select(row => row.Split(',').Select(int.Parse).ToArray()).ToArray(); // 將每個部分轉換成 int[] 並儲存為二維陣列
+
+            //輸出資料
+            int[] iAnsArray = iExamArry1; int iAns = 0; string sAns = null; List<string> lstAns = null;
             bool bAns = false;
 
 
             // 解析每個數字並存入一維陣列
+            if (txtInput1.Text.Contains('[') && txtInput1.Text.Contains(']')) ;
+            else
             for (int i = 0; i < sElements1.Length; i++)
             {
                 if (int.TryParse(sElements1[i], out int value)) // 處理數字（零、正負數）
@@ -619,7 +626,8 @@ namespace OscarAlg
                     return;
                 }
             }
-
+            if (txtInput1.Text.Contains('[') && txtInput1.Text.Contains(']')) ;
+            else
             for (int i = 0; i < sElements2.Length; i++)
             {
                 if (int.TryParse(sElements2[i], out int value)) // 處理數字（零、正負數）
@@ -682,6 +690,24 @@ namespace OscarAlg
                         sResult = sAns;
                         MessageBoxRich("Input：" + sSrc + "，Output：" + sResult);
                         break;
+                    case 435:
+                        //  解題：
+                        iAns = SolutionSort.EraseOverlapIntervals(iExamDoubleArry1);
+                        //  測試答案：
+                        for(int i = 0;i < iExamDoubleArry1.Length; i++)
+                            sSrc += "{" + string.Join(", ", iExamDoubleArry1[i]) + "}";
+                        sResult = "{" + string.Join(", ", iAns) + "}";
+                        MessageBoxRich("Input：" + sSrc + "，Output：" + sResult);
+                        break;
+                    case 228:
+                        //  解題：
+                        lstAns = SolutionSort.SummaryRanges(iExamArry1);
+                        //  測試答案：
+                        sSrc = "{" + string.Join(", ", iExamArry1) + "}";
+                        sResult = "{" + string.Join(", ", lstAns) + "}";
+
+                        MessageBoxRich("Input：" + sSrc + "，Output：" + sResult);
+                        break;
 
                 }
             }
@@ -693,7 +719,7 @@ namespace OscarAlg
 
         private void btnOnlyShowExamination_Click(object sender, EventArgs e)
         {
-            string sExamination = null; string sTitle = null;
+            string sExamination = null; string sTitle = null; string sExam = null;
             m_bShowOnly = true;
             Invoke(new Action(() => { RtxtExamination.Clear();}));
 
@@ -702,9 +728,12 @@ namespace OscarAlg
                 switch (iLeetCodeNum)
                 {
                     case 1122:
-                        //  題型敘述：
-                        sTitle = iLeetCodeNum.ToString() + ". Relative Sort Array：";
+                        //  題目標題：
+                        m_LevelOfExam = Alg.LevelOfExam.Easy; sExam = "Relative Sort Array：";
+                        sTitle = iLeetCodeNum.ToString() + ". " + sExam + "(" + m_LevelOfExam.ToString() + ")";
                         RtxtExaminationMessage(sTitle, 16);
+
+                        //  題型敘述：
                         sExamination = "Given two arrays arr1 and arr2, the elements of arr2 are distinct, and all elements in arr2 are also in arr1." +
                                        "Sort the elements of arr1 such that the relative ordering of items in arr1 are the same as in arr2. " +
                                        "Elements that do not appear in arr2 should be placed at the end of arr1 in ascending order." +
@@ -713,9 +742,12 @@ namespace OscarAlg
 
                         break;
                     case 581:
-                        //  題型敘述：
-                        sTitle = iLeetCodeNum.ToString() + ". Shortest Unsorted Continuous Subarray：";
+                        //  題目標題：
+                        m_LevelOfExam = Alg.LevelOfExam.Medium; sExam = "Shortest Unsorted Continuous Subarray：";
+                        sTitle = iLeetCodeNum.ToString() + ". " + sExam + "(" + m_LevelOfExam.ToString() + ")";
                         RtxtExaminationMessage(sTitle, 16);
+
+                        //  題型敘述：
                         sExamination = "Given an integer array nums, you need to find one continuous subarray such that if you only sort this subarray in non-decreasing order, " +
                                        "then the whole array will be sorted in non-decreasing order." +
                                        "Return the shortest such subarray and output its length." +
@@ -724,10 +756,11 @@ namespace OscarAlg
 
                         break;
                     case 2191:
-                        //  題型敘述：
-                        sTitle = iLeetCodeNum.ToString() + ". " +
-                                 "Sort the Jumbled Numbers：";
+                        //  題目標題：
+                        m_LevelOfExam = Alg.LevelOfExam.Medium; sExam = "Sort the Jumbled Numbers：";
+                        sTitle = iLeetCodeNum.ToString() + ". " + sExam + "(" + m_LevelOfExam.ToString() + ")";
                         RtxtExaminationMessage(sTitle, 16);
+                        //  題型敘述：
                         sExamination = "You are given a 0-indexed integer array mapping which represents the mapping rule of a shuffled decimal system. " +
                             "mapping[i] = j means digit i should be mapped to digit j in this system.\r\n\r\n" +
                             "The mapped value of an integer is the new integer obtained by replacing each occurrence of digit i in the integer with mapping[i] for all 0 <= i <= 9.\r\n\r\n" +
@@ -740,10 +773,11 @@ namespace OscarAlg
 
                         break;
                     case 392:
-                        //  題型敘述：
-                        sTitle = iLeetCodeNum.ToString() + ". " +
-                                 "Is Subsequence：";
+                        //  題目標題：
+                        m_LevelOfExam = Alg.LevelOfExam.Easy; sExam = "Is Subsequence：";
+                        sTitle = iLeetCodeNum.ToString() + ". " + sExam + "(" + m_LevelOfExam.ToString() + ")";
                         RtxtExaminationMessage(sTitle, 16);
+                        //  題型敘述：
                         sExamination = "Given two strings s and t, return true if s is a subsequence of t, or false otherwise." +
                             "\r\n\r\nA subsequence of a string is a new string that is formed from the original string by deleting some (can be none) of the characters without disturbing the relative positions of the remaining characters. " +
                             "(i.e., \"ace\" is a subsequence of \"abcde\" while \"aec\" is not)." +
@@ -752,14 +786,35 @@ namespace OscarAlg
 
                         break;
                     case 179:
-                        //  題型敘述：
-                        sTitle = iLeetCodeNum.ToString() + ". " +
-                                 "Largest Number：";
+                        //  題目標題：
+                        m_LevelOfExam = Alg.LevelOfExam.Medium; sExam = "Largest Number：";
+                        sTitle = iLeetCodeNum.ToString() + ". " + sExam + "(" + m_LevelOfExam.ToString() + ")";
                         RtxtExaminationMessage(sTitle, 16);
+                        //  題型敘述：
                         sExamination = "Given a list of non-negative integers nums, arrange them such that they form the largest number and return it." +
                             "\r\n\r\nSince the result may be very large, so you need to return a string instead of an integer."+
                             "Example 1:\r\n\r\nInput: nums = [10,2]\r\nOutput: \"210\"\r\nExample 2:\r\n\r\nInput: nums = [3,30,34,5,9]\r\n" +
                             "Output: \"9534330\"\r\n \r\n\r\nConstraints:\r\n\r\n1 <= nums.length <= 100\r\n0 <= nums[i] <= 10^9";
+                        RtxtExaminationMessage(sExamination);
+
+                        break;
+                    case 435:
+                        //  題目標題：
+                        m_LevelOfExam = Alg.LevelOfExam.Medium; sExam = "Non-overlapping Intervals：";
+                        sTitle = iLeetCodeNum.ToString() + ". " + sExam + "(" + m_LevelOfExam.ToString() + ")";
+                        RtxtExaminationMessage(sTitle, 16);
+                        //  題型敘述：
+                        sExamination = "Given an array of intervals intervals where intervals[i] = [starti, endi], return the minimum number of intervals you need to remove to make the rest of the intervals non-overlapping.\r\n\r\nNote that intervals which only touch at a point are non-overlapping. For example, [1, 2] and [2, 3] are non-overlapping.\r\n\r\n \r\n\r\nExample 1:\r\n\r\nInput: intervals = [[1,2],[2,3],[3,4],[1,3]]\r\nOutput: 1\r\nExplanation: [1,3] can be removed and the rest of the intervals are non-overlapping.\r\nExample 2:\r\n\r\nInput: intervals = [[1,2],[1,2],[1,2]]\r\nOutput: 2\r\nExplanation: You need to remove two [1,2] to make the rest of the intervals non-overlapping.\r\nExample 3:\r\n\r\nInput: intervals = [[1,2],[2,3]]\r\nOutput: 0\r\nExplanation: You don't need to remove any of the intervals since they're already non-overlapping.\r\n \r\n\r\nConstraints:\r\n\r\n1 <= intervals.length <= 105\r\nintervals[i].length == 2\r\n-5 * 104 <= starti < endi <= 5 * 104";
+                        RtxtExaminationMessage(sExamination);
+
+                        break;
+                    case 228:
+                        //  題目標題：
+                        m_LevelOfExam = Alg.LevelOfExam.Easy; sExam = ". Summary Ranges：";
+                        sTitle = iLeetCodeNum.ToString() + ". " + sExam + "(" + m_LevelOfExam.ToString() + ")";
+                        RtxtExaminationMessage(sTitle, 16);
+                        //  題型敘述：
+                        sExamination = "You are given a sorted unique integer array nums.\r\n\r\nA range [a,b] is the set of all integers from a to b (inclusive).\r\n\r\nReturn the smallest sorted list of ranges that cover all the numbers in the array exactly. That is, each element of nums is covered by exactly one of the ranges, and there is no integer x such that x is in one of the ranges but not in nums.\r\n\r\nEach range [a,b] in the list should be output as:\r\n\r\n\"a->b\" if a != b\r\n\"a\" if a == b\r\n \r\n\r\nExample 1:\r\n\r\nInput: nums = [0,1,2,4,5,7]\r\nOutput: [\"0->2\",\"4->5\",\"7\"]\r\nExplanation: The ranges are:\r\n[0,2] --> \"0->2\"\r\n[4,5] --> \"4->5\"\r\n[7,7] --> \"7\"\r\nExample 2:\r\n\r\nInput: nums = [0,2,3,4,6,8,9]\r\nOutput: [\"0\",\"2->4\",\"6\",\"8->9\"]\r\nExplanation: The ranges are:\r\n[0,0] --> \"0\"\r\n[2,4] --> \"2->4\"\r\n[6,6] --> \"6\"\r\n[8,9] --> \"8->9\"\r\n \r\n\r\nConstraints:\r\n\r\n0 <= nums.length <= 20\r\n-231 <= nums[i] <= 231 - 1\r\nAll the values of nums are unique.\r\nnums is sorted in ascending order.";
                         RtxtExaminationMessage(sExamination);
 
                         break;
