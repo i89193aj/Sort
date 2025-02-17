@@ -8,6 +8,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -97,7 +98,7 @@ namespace OscarAlg
 
             if (ans != null)
             {
-                Ans_Address = Sort.FindAddress(ans);
+                Ans_Address = global::OscarAlg.Sort.FindAddress(ans);
                 //Console.WriteLine(method.ToString() + "Ans_Address(Before)：Address_FirstIndex = " + Sort.FindAddress(ans)[0] + "，Address_ArrayPointer = " + Sort.FindAddress(ans)[1]);
                 MessageBoxRich(m_method.ToString() + "Ans_Address(Before)：Address_FirstIndex = " + Ans_Address[0] + "，Address_ArrayPointer = " + Ans_Address[1]);
             }
@@ -158,7 +159,7 @@ namespace OscarAlg
 
             if (ans != null)
             {
-                Ans_Address = Sort.FindAddress(ans);
+                Ans_Address = global::OscarAlg.Sort.FindAddress(ans);
                 //Console.WriteLine(method.ToString() + "Ans_Address(After)：Address_FirstIndex = " + Sort.FindAddress(ans)[0] + "，Address_ArrayPointer = " + Sort.FindAddress(ans)[1]);
                 MessageBoxRich(m_method.ToString() + "Ans_Address(After)：Address_FirstIndex = " + Ans_Address[0] + "，Address_ArrayPointer = " + Ans_Address[1]);
             }
@@ -829,6 +830,114 @@ namespace OscarAlg
             {
                 MessageBox.Show("請輸入號碼!");
             }
+        }
+
+        private void btnLinkedlistBuild_Click(object sender, EventArgs e)
+        {
+            string str = null;
+            #region - String(Utest) -
+            Linkedlist myListStr = new Linkedlist(true);
+
+            for (int i = 0; i <= 6; i++)
+                myListStr.Add(i.ToString());
+
+            str = myListStr.GetString(6);
+            string str1 = myListStr.GetString(7);
+            myListStr.PopString();
+            str = myListStr.GetString(6);
+            myListStr.Add("4");
+            str = myListStr.PrintAllString();
+            //myListStr.DeleteString("4");
+
+            myListStr.InsertString(0, "321");
+            str = myListStr.GetString(0);
+            str = myListStr.GetString(1);
+            str = myListStr.PrintAllString();
+
+            myListStr.RemoveStringAt(0);
+            str = myListStr.GetString(0);
+            str = myListStr.GetString(1);
+            str = myListStr.PrintAllString();
+
+            myListStr.InsertString(4, "456");
+            str = myListStr.GetString(4);
+            str = myListStr.GetString(5);
+            str = myListStr.PrintAllString();
+
+            myListStr.RemoveStringAt(4);
+            str = myListStr.GetString(4);
+            str = myListStr.GetString(5);
+            str = myListStr.PrintAllString();
+
+            myListStr.FreeALLString();
+            myListStr.Dispose();
+            str = myListStr.List == IntPtr.Zero ? "It null" : myListStr.GetString(0);
+            #endregion
+
+            #region - Int(Utest) -
+            Linkedlist myListInt = new Linkedlist(false);
+
+            for (int i = 0; i <= 6; i++)
+                myListInt.Add(i);
+
+            int iAns = myListInt.Get(6);
+            try
+            {
+                //試試超出索引(結果真的會報錯)
+                int aa = myListInt.Get(7);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            myListInt.Pop();
+            try
+            {
+                //試試超出索引(結果真的會報錯)
+                int aa = myListInt.Get(6);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            myListInt.Add(4);
+            str = myListInt.PrintAll();
+            myListInt.Delete(4);
+            str = myListInt.PrintAll();
+
+            myListInt.Insert(0, 321);
+            iAns = myListInt.Get(0);
+            iAns = myListInt.Get(1);
+            str = myListInt.PrintAll();
+
+            myListInt.RemoveAt(0);
+            iAns = myListInt.Get(0);
+            iAns = myListInt.Get(1);
+            str = myListInt.PrintAll();
+
+
+            myListInt.Insert(4, 456);
+            iAns = myListInt.Get(4);
+            iAns = myListInt.Get(5);
+            str = myListInt.PrintAll();
+
+            myListInt.RemoveAt(4);
+            iAns = myListInt.Get(4);
+            try
+            {
+                iAns = myListInt.Get(5);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            str = myListInt.PrintAll();
+
+
+            myListInt.FreeALLInt();
+            myListInt.Dispose();
+            #endregion
         }
     }
 }

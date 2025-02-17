@@ -57,6 +57,10 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Linkedlist, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\x64\Release\Linkedlist.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -71,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Alg.cs" />
+    <Compile Include="Linkedlist.cs" />
     <Compile Include="OscarAlg.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -30,10 +30,16 @@
         {
             this.pnlBottom = new System.Windows.Forms.Panel();
             this.tabControl1 = new System.Windows.Forms.TabControl();
-            this.lblSpendTime = new System.Windows.Forms.TabPage();
+            this.Sort = new System.Windows.Forms.TabPage();
+            this.btnOnlyShowExamination = new System.Windows.Forms.Button();
+            this.txtInput1 = new System.Windows.Forms.TextBox();
+            this.txtInput2 = new System.Windows.Forms.TextBox();
+            this.lblInput = new System.Windows.Forms.Label();
+            this.lblLeetCodeNum = new System.Windows.Forms.Label();
+            this.txtLeetCodeNum = new System.Windows.Forms.TextBox();
             this.btnContest = new System.Windows.Forms.Button();
-            this.btnSubmit = new System.Windows.Forms.Button();
             this.gbRtxt_Sort = new System.Windows.Forms.GroupBox();
+            this.RtxtExamination = new System.Windows.Forms.RichTextBox();
             this.Rtxt_Sort = new System.Windows.Forms.RichTextBox();
             this.gbSortMethod = new System.Windows.Forms.GroupBox();
             this.btnSortStart = new System.Windows.Forms.Button();
@@ -50,6 +56,7 @@
             this.rdbInsetSort = new System.Windows.Forms.RadioButton();
             this.cbGoodORWorse = new System.Windows.Forms.ComboBox();
             this.lblGoodorWorse = new System.Windows.Forms.Label();
+            this.btnSubmit = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.txtSendTime = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -68,23 +75,20 @@
             this.txtOutput = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.txtInput = new System.Windows.Forms.TextBox();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.txtLeetCodeNum = new System.Windows.Forms.TextBox();
-            this.lblLeetCodeNum = new System.Windows.Forms.Label();
-            this.RtxtExamination = new System.Windows.Forms.RichTextBox();
-            this.lblInput = new System.Windows.Forms.Label();
-            this.txtInput2 = new System.Windows.Forms.TextBox();
-            this.txtInput1 = new System.Windows.Forms.TextBox();
-            this.btnOnlyShowExamination = new System.Windows.Forms.Button();
+            this.Linkedlist = new System.Windows.Forms.TabPage();
+            this.gbLinkedlistTest = new System.Windows.Forms.GroupBox();
+            this.btnLinkedlistBuild = new System.Windows.Forms.Button();
             this.pnlBottom.SuspendLayout();
             this.tabControl1.SuspendLayout();
-            this.lblSpendTime.SuspendLayout();
+            this.Sort.SuspendLayout();
             this.gbRtxt_Sort.SuspendLayout();
             this.gbSortMethod.SuspendLayout();
             this.gbSort.SuspendLayout();
             this.gbMakeArray.SuspendLayout();
             this.gbRandomGiveParam.SuspendLayout();
             this.gbManualParam.SuspendLayout();
+            this.Linkedlist.SuspendLayout();
+            this.gbLinkedlistTest.SuspendLayout();
             this.SuspendLayout();
             // 
             // pnlBottom
@@ -99,8 +103,8 @@
             // 
             // tabControl1
             // 
-            this.tabControl1.Controls.Add(this.lblSpendTime);
-            this.tabControl1.Controls.Add(this.tabPage2);
+            this.tabControl1.Controls.Add(this.Sort);
+            this.tabControl1.Controls.Add(this.Linkedlist);
             this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl1.Location = new System.Drawing.Point(0, 0);
             this.tabControl1.Margin = new System.Windows.Forms.Padding(2);
@@ -109,26 +113,83 @@
             this.tabControl1.Size = new System.Drawing.Size(877, 656);
             this.tabControl1.TabIndex = 0;
             // 
-            // lblSpendTime
+            // Sort
             // 
-            this.lblSpendTime.Controls.Add(this.btnOnlyShowExamination);
-            this.lblSpendTime.Controls.Add(this.txtInput1);
-            this.lblSpendTime.Controls.Add(this.txtInput2);
-            this.lblSpendTime.Controls.Add(this.lblInput);
-            this.lblSpendTime.Controls.Add(this.lblLeetCodeNum);
-            this.lblSpendTime.Controls.Add(this.txtLeetCodeNum);
-            this.lblSpendTime.Controls.Add(this.btnContest);
-            this.lblSpendTime.Controls.Add(this.gbRtxt_Sort);
-            this.lblSpendTime.Controls.Add(this.gbSortMethod);
-            this.lblSpendTime.Controls.Add(this.gbMakeArray);
-            this.lblSpendTime.Location = new System.Drawing.Point(4, 22);
-            this.lblSpendTime.Margin = new System.Windows.Forms.Padding(2);
-            this.lblSpendTime.Name = "lblSpendTime";
-            this.lblSpendTime.Padding = new System.Windows.Forms.Padding(2);
-            this.lblSpendTime.Size = new System.Drawing.Size(869, 630);
-            this.lblSpendTime.TabIndex = 0;
-            this.lblSpendTime.Text = "SpendTime";
-            this.lblSpendTime.UseVisualStyleBackColor = true;
+            this.Sort.Controls.Add(this.btnOnlyShowExamination);
+            this.Sort.Controls.Add(this.txtInput1);
+            this.Sort.Controls.Add(this.txtInput2);
+            this.Sort.Controls.Add(this.lblInput);
+            this.Sort.Controls.Add(this.lblLeetCodeNum);
+            this.Sort.Controls.Add(this.txtLeetCodeNum);
+            this.Sort.Controls.Add(this.btnContest);
+            this.Sort.Controls.Add(this.gbRtxt_Sort);
+            this.Sort.Controls.Add(this.gbSortMethod);
+            this.Sort.Controls.Add(this.gbMakeArray);
+            this.Sort.Location = new System.Drawing.Point(4, 22);
+            this.Sort.Margin = new System.Windows.Forms.Padding(2);
+            this.Sort.Name = "Sort";
+            this.Sort.Padding = new System.Windows.Forms.Padding(2);
+            this.Sort.Size = new System.Drawing.Size(869, 630);
+            this.Sort.TabIndex = 0;
+            this.Sort.Text = "Sort";
+            this.Sort.UseVisualStyleBackColor = true;
+            // 
+            // btnOnlyShowExamination
+            // 
+            this.btnOnlyShowExamination.Location = new System.Drawing.Point(790, 563);
+            this.btnOnlyShowExamination.Margin = new System.Windows.Forms.Padding(2);
+            this.btnOnlyShowExamination.Name = "btnOnlyShowExamination";
+            this.btnOnlyShowExamination.Size = new System.Drawing.Size(75, 30);
+            this.btnOnlyShowExamination.TabIndex = 17;
+            this.btnOnlyShowExamination.Text = "ShowExam";
+            this.btnOnlyShowExamination.UseVisualStyleBackColor = true;
+            this.btnOnlyShowExamination.Click += new System.EventHandler(this.btnOnlyShowExamination_Click);
+            // 
+            // txtInput1
+            // 
+            this.txtInput1.Location = new System.Drawing.Point(515, 571);
+            this.txtInput1.Margin = new System.Windows.Forms.Padding(2);
+            this.txtInput1.Name = "txtInput1";
+            this.txtInput1.Size = new System.Drawing.Size(261, 22);
+            this.txtInput1.TabIndex = 16;
+            // 
+            // txtInput2
+            // 
+            this.txtInput2.Location = new System.Drawing.Point(515, 599);
+            this.txtInput2.Margin = new System.Windows.Forms.Padding(2);
+            this.txtInput2.Name = "txtInput2";
+            this.txtInput2.Size = new System.Drawing.Size(261, 22);
+            this.txtInput2.TabIndex = 15;
+            // 
+            // lblInput
+            // 
+            this.lblInput.AutoSize = true;
+            this.lblInput.Font = new System.Drawing.Font("新細明體", 12F);
+            this.lblInput.Location = new System.Drawing.Point(467, 571);
+            this.lblInput.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblInput.Name = "lblInput";
+            this.lblInput.Size = new System.Drawing.Size(44, 16);
+            this.lblInput.TabIndex = 14;
+            this.lblInput.Text = "Input:";
+            // 
+            // lblLeetCodeNum
+            // 
+            this.lblLeetCodeNum.AutoSize = true;
+            this.lblLeetCodeNum.Font = new System.Drawing.Font("新細明體", 10F);
+            this.lblLeetCodeNum.Location = new System.Drawing.Point(336, 574);
+            this.lblLeetCodeNum.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.lblLeetCodeNum.Name = "lblLeetCodeNum";
+            this.lblLeetCodeNum.Size = new System.Drawing.Size(90, 14);
+            this.lblLeetCodeNum.TabIndex = 13;
+            this.lblLeetCodeNum.Text = "LeetCodeNum:";
+            // 
+            // txtLeetCodeNum
+            // 
+            this.txtLeetCodeNum.Location = new System.Drawing.Point(340, 592);
+            this.txtLeetCodeNum.Margin = new System.Windows.Forms.Padding(2);
+            this.txtLeetCodeNum.Name = "txtLeetCodeNum";
+            this.txtLeetCodeNum.Size = new System.Drawing.Size(69, 22);
+            this.txtLeetCodeNum.TabIndex = 12;
             // 
             // btnContest
             // 
@@ -141,17 +202,6 @@
             this.btnContest.UseVisualStyleBackColor = true;
             this.btnContest.Click += new System.EventHandler(this.btnContest_Click);
             // 
-            // btnSubmit
-            // 
-            this.btnSubmit.Location = new System.Drawing.Point(132, 351);
-            this.btnSubmit.Margin = new System.Windows.Forms.Padding(2);
-            this.btnSubmit.Name = "btnSubmit";
-            this.btnSubmit.Size = new System.Drawing.Size(78, 32);
-            this.btnSubmit.TabIndex = 11;
-            this.btnSubmit.Text = "Submit";
-            this.btnSubmit.UseVisualStyleBackColor = true;
-            this.btnSubmit.Click += new System.EventHandler(this.btnSubmit_Click);
-            // 
             // gbRtxt_Sort
             // 
             this.gbRtxt_Sort.Controls.Add(this.RtxtExamination);
@@ -162,6 +212,15 @@
             this.gbRtxt_Sort.TabIndex = 6;
             this.gbRtxt_Sort.TabStop = false;
             this.gbRtxt_Sort.Text = "考試：";
+            // 
+            // RtxtExamination
+            // 
+            this.RtxtExamination.Dock = System.Windows.Forms.DockStyle.Top;
+            this.RtxtExamination.Location = new System.Drawing.Point(3, 18);
+            this.RtxtExamination.Name = "RtxtExamination";
+            this.RtxtExamination.Size = new System.Drawing.Size(518, 269);
+            this.RtxtExamination.TabIndex = 12;
+            this.RtxtExamination.Text = "";
             // 
             // Rtxt_Sort
             // 
@@ -355,6 +414,17 @@
             this.lblGoodorWorse.Size = new System.Drawing.Size(40, 12);
             this.lblGoodorWorse.TabIndex = 7;
             this.lblGoodorWorse.Text = "Factor :";
+            // 
+            // btnSubmit
+            // 
+            this.btnSubmit.Location = new System.Drawing.Point(132, 351);
+            this.btnSubmit.Margin = new System.Windows.Forms.Padding(2);
+            this.btnSubmit.Name = "btnSubmit";
+            this.btnSubmit.Size = new System.Drawing.Size(78, 32);
+            this.btnSubmit.TabIndex = 11;
+            this.btnSubmit.Text = "Submit";
+            this.btnSubmit.UseVisualStyleBackColor = true;
+            this.btnSubmit.Click += new System.EventHandler(this.btnSubmit_Click);
             // 
             // label4
             // 
@@ -552,82 +622,38 @@
             this.txtInput.TabIndex = 1;
             this.txtInput.Text = "002115";
             // 
-            // tabPage2
+            // Linkedlist
             // 
-            this.tabPage2.Location = new System.Drawing.Point(4, 22);
-            this.tabPage2.Margin = new System.Windows.Forms.Padding(2);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(2);
-            this.tabPage2.Size = new System.Drawing.Size(869, 630);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "tabPage2";
-            this.tabPage2.UseVisualStyleBackColor = true;
+            this.Linkedlist.Controls.Add(this.gbLinkedlistTest);
+            this.Linkedlist.Location = new System.Drawing.Point(4, 22);
+            this.Linkedlist.Margin = new System.Windows.Forms.Padding(2);
+            this.Linkedlist.Name = "Linkedlist";
+            this.Linkedlist.Padding = new System.Windows.Forms.Padding(2);
+            this.Linkedlist.Size = new System.Drawing.Size(869, 630);
+            this.Linkedlist.TabIndex = 1;
+            this.Linkedlist.Text = "Linkedlist";
+            this.Linkedlist.UseVisualStyleBackColor = true;
             // 
-            // txtLeetCodeNum
+            // gbLinkedlistTest
             // 
-            this.txtLeetCodeNum.Location = new System.Drawing.Point(340, 592);
-            this.txtLeetCodeNum.Margin = new System.Windows.Forms.Padding(2);
-            this.txtLeetCodeNum.Name = "txtLeetCodeNum";
-            this.txtLeetCodeNum.Size = new System.Drawing.Size(69, 22);
-            this.txtLeetCodeNum.TabIndex = 12;
+            this.gbLinkedlistTest.Controls.Add(this.btnLinkedlistBuild);
+            this.gbLinkedlistTest.Location = new System.Drawing.Point(9, 17);
+            this.gbLinkedlistTest.Name = "gbLinkedlistTest";
+            this.gbLinkedlistTest.Size = new System.Drawing.Size(386, 275);
+            this.gbLinkedlistTest.TabIndex = 1;
+            this.gbLinkedlistTest.TabStop = false;
+            this.gbLinkedlistTest.Text = "Linkedlisttest";
             // 
-            // lblLeetCodeNum
+            // btnLinkedlistBuild
             // 
-            this.lblLeetCodeNum.AutoSize = true;
-            this.lblLeetCodeNum.Font = new System.Drawing.Font("新細明體", 10F);
-            this.lblLeetCodeNum.Location = new System.Drawing.Point(336, 574);
-            this.lblLeetCodeNum.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblLeetCodeNum.Name = "lblLeetCodeNum";
-            this.lblLeetCodeNum.Size = new System.Drawing.Size(90, 14);
-            this.lblLeetCodeNum.TabIndex = 13;
-            this.lblLeetCodeNum.Text = "LeetCodeNum:";
-            // 
-            // RtxtExamination
-            // 
-            this.RtxtExamination.Dock = System.Windows.Forms.DockStyle.Top;
-            this.RtxtExamination.Location = new System.Drawing.Point(3, 18);
-            this.RtxtExamination.Name = "RtxtExamination";
-            this.RtxtExamination.Size = new System.Drawing.Size(518, 269);
-            this.RtxtExamination.TabIndex = 12;
-            this.RtxtExamination.Text = "";
-            // 
-            // lblInput
-            // 
-            this.lblInput.AutoSize = true;
-            this.lblInput.Font = new System.Drawing.Font("新細明體", 12F);
-            this.lblInput.Location = new System.Drawing.Point(467, 571);
-            this.lblInput.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
-            this.lblInput.Name = "lblInput";
-            this.lblInput.Size = new System.Drawing.Size(44, 16);
-            this.lblInput.TabIndex = 14;
-            this.lblInput.Text = "Input:";
-            // 
-            // txtInput2
-            // 
-            this.txtInput2.Location = new System.Drawing.Point(515, 599);
-            this.txtInput2.Margin = new System.Windows.Forms.Padding(2);
-            this.txtInput2.Name = "txtInput2";
-            this.txtInput2.Size = new System.Drawing.Size(261, 22);
-            this.txtInput2.TabIndex = 15;
-            // 
-            // txtInput1
-            // 
-            this.txtInput1.Location = new System.Drawing.Point(515, 571);
-            this.txtInput1.Margin = new System.Windows.Forms.Padding(2);
-            this.txtInput1.Name = "txtInput1";
-            this.txtInput1.Size = new System.Drawing.Size(261, 22);
-            this.txtInput1.TabIndex = 16;
-            // 
-            // btnOnlyShowExamination
-            // 
-            this.btnOnlyShowExamination.Location = new System.Drawing.Point(790, 563);
-            this.btnOnlyShowExamination.Margin = new System.Windows.Forms.Padding(2);
-            this.btnOnlyShowExamination.Name = "btnOnlyShowExamination";
-            this.btnOnlyShowExamination.Size = new System.Drawing.Size(75, 30);
-            this.btnOnlyShowExamination.TabIndex = 17;
-            this.btnOnlyShowExamination.Text = "ShowExam";
-            this.btnOnlyShowExamination.UseVisualStyleBackColor = true;
-            this.btnOnlyShowExamination.Click += new System.EventHandler(this.btnOnlyShowExamination_Click);
+            this.btnLinkedlistBuild.AccessibleRole = System.Windows.Forms.AccessibleRole.SplitButton;
+            this.btnLinkedlistBuild.Location = new System.Drawing.Point(6, 21);
+            this.btnLinkedlistBuild.Name = "btnLinkedlistBuild";
+            this.btnLinkedlistBuild.Size = new System.Drawing.Size(132, 39);
+            this.btnLinkedlistBuild.TabIndex = 0;
+            this.btnLinkedlistBuild.Text = "NewLinkedlist\r\n(Test c++)";
+            this.btnLinkedlistBuild.UseVisualStyleBackColor = true;
+            this.btnLinkedlistBuild.Click += new System.EventHandler(this.btnLinkedlistBuild_Click);
             // 
             // OscarAlg
             // 
@@ -641,8 +667,8 @@
             this.Load += new System.EventHandler(this.OscarAlg_Load);
             this.pnlBottom.ResumeLayout(false);
             this.tabControl1.ResumeLayout(false);
-            this.lblSpendTime.ResumeLayout(false);
-            this.lblSpendTime.PerformLayout();
+            this.Sort.ResumeLayout(false);
+            this.Sort.PerformLayout();
             this.gbRtxt_Sort.ResumeLayout(false);
             this.gbSortMethod.ResumeLayout(false);
             this.gbSortMethod.PerformLayout();
@@ -653,6 +679,8 @@
             this.gbRandomGiveParam.PerformLayout();
             this.gbManualParam.ResumeLayout(false);
             this.gbManualParam.PerformLayout();
+            this.Linkedlist.ResumeLayout(false);
+            this.gbLinkedlistTest.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -661,11 +689,11 @@
 
         private System.Windows.Forms.Panel pnlBottom;
         private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage lblSpendTime;
+        private System.Windows.Forms.TabPage Sort;
         private System.Windows.Forms.Button btnMakeArray;
         private System.Windows.Forms.TextBox txtOutput;
         private System.Windows.Forms.TextBox txtInput;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage Linkedlist;
         private System.Windows.Forms.GroupBox gbSortMethod;
         private System.Windows.Forms.TextBox txtAns;
         private System.Windows.Forms.GroupBox gbMakeArray;
@@ -707,6 +735,8 @@
         private System.Windows.Forms.TextBox txtInput2;
         private System.Windows.Forms.Label lblInput;
         private System.Windows.Forms.Button btnOnlyShowExamination;
+        private System.Windows.Forms.GroupBox gbLinkedlistTest;
+        private System.Windows.Forms.Button btnLinkedlistBuild;
     }
 }
 
